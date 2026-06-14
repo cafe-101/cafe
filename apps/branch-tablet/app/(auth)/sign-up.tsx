@@ -11,43 +11,30 @@ export default function SignUpScreen() {
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
-  const [error, setError] = React.useState("");
-  const [loadingSignUp, setLoadingSignUp] = React.useState(false);
-  const [loadingVerify, setLoadingVerify] = React.useState(false);
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
-    setLoadingSignUp(true);
-    setError("");
     try {
       await signUp.create({ emailAddress, password });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
-      setError(err?.errors?.[0]?.message || err?.message || "Failed to sign up.");
-    } finally {
-      setLoadingSignUp(false);
+      console.error("Sign up error:", err?.message || err);
     }
   };
 
   const onPressVerify = async () => {
     if (!isLoaded) return;
-    setLoadingVerify(true);
-    setError("");
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({ code });
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
         router.replace("/");
       } else {
-        console.error(JSON.stringify(completeSignUp, null, 2));
+        console.error("Verification failed with status:", completeSignUp.status);
       }
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
-      setError(err?.errors?.[0]?.message || err?.message || "Failed to verify email.");
-    } finally {
-      setLoadingVerify(false);
+      console.error("Verification error:", err?.message || err);
     }
   };
 
@@ -56,11 +43,7 @@ export default function SignUpScreen() {
       {!pendingVerification && (
         <View>
           <Text style={styles.title}>Create Account</Text>
-          {error ? <Text style={styles.errorText}>{error}</Text> : null}
           <TextInput
-            accessibilityLabel="Email input"
-            accessibilityHint="Enter your email address"
-            accessibilityRole="keyboardkey"
             autoCapitalize="none"
             value={emailAddress}
             placeholder="Email..."
@@ -69,9 +52,6 @@ export default function SignUpScreen() {
             style={styles.input}
           />
           <TextInput
-            accessibilityLabel="Password input"
-            accessibilityHint="Enter your password"
-            accessibilityRole="keyboardkey"
             value={password}
             placeholder="Password..."
             placeholderTextColor="#9CA3AF"
@@ -79,24 +59,13 @@ export default function SignUpScreen() {
             onChangeText={(password) => setPassword(password)}
             style={styles.input}
           />
-          <TouchableOpacity 
-            accessibilityLabel="Sign up button"
-            accessibilityHint="Submits your information to create an account"
-            accessibilityRole="button"
-            style={styles.button} 
-            onPress={onSignUpPress}
-            disabled={loadingSignUp}
-          >
-            <Text style={styles.buttonText}>{loadingSignUp ? "Creating Account..." : "Sign Up"}</Text>
+          <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
+            <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
           <View style={styles.footer}>
             <Text>Already have an account?</Text>
             <Link href="/(auth)/sign-in" asChild>
-              <TouchableOpacity
-                accessibilityLabel="Navigate to sign in"
-                accessibilityHint="Goes to the sign in screen"
-                accessibilityRole="button"
-              >
+              <TouchableOpacity>
                 <Text style={styles.linkText}> Sign in</Text>
               </TouchableOpacity>
             </Link>
@@ -106,26 +75,15 @@ export default function SignUpScreen() {
       {pendingVerification && (
         <View>
           <Text style={styles.title}>Verify Email</Text>
-          {error ? <Text style={styles.errorText}>{error}</Text> : null}
           <TextInput
-            accessibilityLabel="Verification code input"
-            accessibilityHint="Enter the verification code sent to your email"
-            accessibilityRole="keyboardkey"
             value={code}
             placeholder="Verification Code..."
             placeholderTextColor="#9CA3AF"
             onChangeText={(code) => setCode(code)}
             style={styles.input}
           />
-          <TouchableOpacity 
-            accessibilityLabel="Verify button"
-            accessibilityHint="Submits your verification code"
-            accessibilityRole="button"
-            style={styles.button} 
-            onPress={onPressVerify}
-            disabled={loadingVerify}
-          >
-            <Text style={styles.buttonText}>{loadingVerify ? "Verifying..." : "Verify"}</Text>
+          <TouchableOpacity style={styles.button} onPress={onPressVerify}>
+            <Text style={styles.buttonText}>Verify</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -175,10 +133,5 @@ const styles = StyleSheet.create({
   linkText: {
     color: "#4F46E5",
     fontWeight: "bold",
-  },
-  errorText: {
-    color: "#EF4444",
-    marginBottom: 15,
-    textAlign: "center",
   },
 });

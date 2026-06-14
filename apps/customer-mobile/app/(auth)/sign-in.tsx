@@ -9,9 +9,14 @@ export default function SignInScreen() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const onSignInPress = async () => {
     if (!isLoaded) return;
+    
+    setLoading(true);
+    setError("");
 
     try {
       const signInAttempt = await signIn.create({
@@ -27,13 +32,20 @@ export default function SignInScreen() {
       }
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
+      setError(err?.errors?.[0]?.message || err?.message || "An error occurred during sign in.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome Back</Text>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TextInput
+        accessibilityLabel="Email address"
+        accessibilityHint="Enter your email address"
+        accessibilityRole="keyboardkey"
         autoCapitalize="none"
         value={emailAddress}
         placeholder="Email..."
@@ -42,6 +54,9 @@ export default function SignInScreen() {
         style={styles.input}
       />
       <TextInput
+        accessibilityLabel="Password"
+        accessibilityHint="Enter your password"
+        accessibilityRole="keyboardkey"
         value={password}
         placeholder="Password..."
         placeholderTextColor="#9CA3AF"
@@ -49,13 +64,24 @@ export default function SignInScreen() {
         onChangeText={(password) => setPassword(password)}
         style={styles.input}
       />
-      <TouchableOpacity style={styles.button} onPress={onSignInPress}>
-        <Text style={styles.buttonText}>Sign In</Text>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={onSignInPress}
+        disabled={loading}
+        accessibilityLabel="Sign in button"
+        accessibilityHint="Submits your credentials"
+        accessibilityRole="button"
+      >
+        <Text style={styles.buttonText}>{loading ? "Signing In..." : "Sign In"}</Text>
       </TouchableOpacity>
       <View style={styles.footer}>
         <Text>Don't have an account?</Text>
         <Link href="/(auth)/sign-up" asChild>
-          <TouchableOpacity>
+          <TouchableOpacity
+            accessibilityLabel="Sign up link"
+            accessibilityHint="Goes to the sign up page"
+            accessibilityRole="button"
+          >
             <Text style={styles.linkText}> Sign up</Text>
           </TouchableOpacity>
         </Link>
@@ -106,5 +132,10 @@ const styles = StyleSheet.create({
   linkText: {
     color: "#4F46E5",
     fontWeight: "bold",
+  },
+  errorText: {
+    color: "#EF4444",
+    marginBottom: 15,
+    textAlign: "center",
   },
 });

@@ -1,4 +1,4 @@
-import { Show, useAuth } from "@clerk/clerk-expo";
+import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -7,27 +7,43 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Show when="signed-out">
+      <SignedOut>
         <Text style={styles.title}>Welcome to Cafe Customer Portal</Text>
         <Link href="/(auth)/sign-in" asChild>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity 
+            style={styles.button}
+            accessibilityLabel="Sign In Navigation"
+            accessibilityHint="Goes to sign in screen"
+            accessibilityRole="button"
+          >
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
         </Link>
         <Link href="/(auth)/sign-up" asChild>
-          <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
+          <TouchableOpacity 
+            style={[styles.button, styles.secondaryButton]}
+            accessibilityLabel="Sign Up Navigation"
+            accessibilityHint="Goes to sign up screen"
+            accessibilityRole="button"
+          >
             <Text style={[styles.buttonText, styles.secondaryButtonText]}>Sign Up</Text>
           </TouchableOpacity>
         </Link>
-      </Show>
+      </SignedOut>
 
-      <Show when="signed-in">
+      <SignedIn>
         <Text style={styles.title}>You are Signed In!</Text>
         <Text style={styles.subtitle}>Welcome back to Cafe.</Text>
-        <TouchableOpacity style={styles.button} onPress={() => signOut()}>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => signOut()}
+          accessibilityLabel="Sign Out Button"
+          accessibilityHint="Logs you out of your account"
+          accessibilityRole="button"
+        >
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>
-      </Show>
+      </SignedIn>
     </View>
   );
 }

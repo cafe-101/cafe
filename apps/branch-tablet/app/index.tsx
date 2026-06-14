@@ -1,4 +1,4 @@
-import { Show, useAuth } from "@clerk/clerk-expo";
+import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -7,22 +7,22 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Show when="signed-out">
+      <SignedOut>
         <Text style={styles.title}>Branch Staff Portal</Text>
         <Link href="/(auth)/sign-in" asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Staff Login</Text>
           </TouchableOpacity>
         </Link>
-      </Show>
+      </SignedOut>
 
-      <Show when="signed-in">
+      <SignedIn>
         <Text style={styles.title}>Staff Dashboard</Text>
         <Text style={styles.subtitle}>Manage orders, inventory, and menu.</Text>
         <TouchableOpacity style={styles.button} onPress={() => signOut()}>
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>
-      </Show>
+      </SignedIn>
     </View>
   );
 }

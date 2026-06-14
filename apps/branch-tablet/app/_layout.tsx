@@ -2,7 +2,7 @@ import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { Stack } from "expo-router";
 import { tokenCache } from "../utils/tokenCache";
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || "YOUR_CLERK_PUBLISHABLE_KEY";
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 if (!publishableKey) {
   throw new Error(

@@ -71,7 +71,11 @@ export default function Page() {
               <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 text-left hover:bg-white/10 transition-colors cursor-pointer group">
                 <h3 className="text-slate-400 font-medium mb-4">{stat.title}</h3>
                 <p className="text-4xl font-bold mb-2 group-hover:scale-105 transition-transform origin-left">{stat.value}</p>
-                <p className={`text-sm text-${stat.color}-400`}>{stat.trend}</p>
+                <p className={`text-sm ${
+                  stat.color === 'indigo' ? 'text-indigo-400' :
+                  stat.color === 'cyan' ? 'text-cyan-400' :
+                  stat.color === 'teal' ? 'text-teal-400' : ''
+                }`}>{stat.trend}</p>
               </div>
             ))}
           </div>

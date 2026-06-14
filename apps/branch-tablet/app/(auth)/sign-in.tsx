@@ -23,10 +23,10 @@ export default function SignInScreen() {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/");
       } else {
-        console.error(JSON.stringify(signInAttempt, null, 2));
+        console.error("Sign in failed with status:", signInAttempt.status);
       }
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      console.error("Sign in error:", err?.message || err);
     }
   };
 
