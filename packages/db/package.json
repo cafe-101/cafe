@@ -1,0 +1,31 @@
+{
+  "name": "@cafe/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "generate": "prisma generate",
+    "push": "prisma db push"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.8.0",
+    "@prisma/client": "7.8.0",
+    "pg": "8.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.0.0",
+    "@types/pg": "8.20.0",
+    "dotenv": "17.4.2",
+    "prisma": "7.8.0",
+    "typescript": "6.0.3"
+  }
+}
