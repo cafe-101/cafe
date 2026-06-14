@@ -15,3 +15,4 @@ This project is a **Coffee Shop Chain** with one main headquarters (HQ) and mult
 6. **Environment**: Local dev uses host node for apps (hot-reload); Docker for DB/Redis/LocalStack. Prod is fully Dockerized.
 7. **Ports**: Check `.env` `PORT`, fallback: API (4040), Mob (4041), Web (4042), Tab (4043), Postgres (4044), Redis (4045), LocalStack S3 (4046).
 8. **CI/CD**: `pnpm biome ci`, Turbo remote caching, Portainer/ECS/GHCR deploys.
+9. **Cross-App Sync**: When working on a feature, bug fix, or update, ensure that all affected apps (e.g., `api`, `hq-web`, `customer-mobile`, `branch-tablet`) and shared packages are updated at the same time to maintain consistency across the ecosystem.
