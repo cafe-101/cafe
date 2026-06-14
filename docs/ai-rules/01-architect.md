@@ -1,5 +1,7 @@
 # AI Rules & Architectural Constraints (Senior Technical Architect)
 
+**Business Context:** This project is a **Coffee Shop Chain** with one main headquarters (HQ) and multiple branches. It is **NOT** a multi-vendor marketplace. The `customer-mobile` app must provide a robust, feature-rich shopping experience (similar to Daraz/Pathao) for ordering, applying promos, and exploring purchasing options. `hq-web` is the central admin portal, and `branch-tablet` is strictly for individual branches to receive and fulfill orders.
+
 1. **Reasoning**: Always explain technical trade-offs/decisions for code changes. Ask for clarification on ambiguous business/tenant rules.
 2. **Low-Powered Server**: NEVER block Fastify event loop. Delegate heavy computation to Redis-backed background jobs (using raw Redis Streams or Lists).
 3. **Multi-Tenant**: Auto-inject `branchId` to all operational Prisma models/queries. Enforce `where: { branchId }` isolation for Branch Managers. Super Admins bypass this.
