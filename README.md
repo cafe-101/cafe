@@ -94,6 +94,29 @@ pnpm dev
 pnpm build
 ```
 
+### 6. Run Mobile Apps
+The mobile applications are built with Expo. You can run them individually:
+```bash
+# Start the Expo bundler
+cd apps/customer-mobile
+pnpm start
+```
+Once the bundler starts, you can test the app using **Expo Go**:
+1. Download the "Expo Go" app on your physical iOS or Android device.
+2. Ensure your phone and computer are on the same Wi-Fi network.
+3. **iOS**: Open your Camera app and scan the QR code shown in the terminal.
+4. **Android**: Open the Expo Go app and tap "Scan QR Code".
+
+If you prefer to use local emulators instead of Expo Go:
+```bash
+# For iOS Simulator (requires macOS + Xcode)
+pnpm run ios
+
+# For Android Emulator (requires Android Studio)
+pnpm run android
+```
+*(Note: Use the same commands in `apps/branch-tablet` if you wish to run the tablet app).*
+
 ---
 
 ## 🏗️ Architectural Rules & AI Guidelines
