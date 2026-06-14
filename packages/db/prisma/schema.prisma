@@ -51,7 +51,9 @@ model User {
 
   // Multi-tenant (Super Admins might have branchId = null)
   branchId  String?
-  branch    Branch?  @relation(fields: [branchId], references: [id])
+  branch    Branch?  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
 }
 
 // -----------------------------------------------------------------------------
@@ -66,7 +68,9 @@ model MenuCategory {
   updatedAt DateTime @updatedAt
 
   branchId  String
-  branch    Branch   @relation(fields: [branchId], references: [id])
+  branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
 
   items     MenuItem[]
 }
@@ -85,7 +89,10 @@ model MenuItem {
   category    MenuCategory @relation(fields: [categoryId], references: [id])
 
   branchId    String
-  branch      Branch       @relation(fields: [branchId], references: [id])
+  branch      Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
+  @@index([categoryId])
 
   orderItems  OrderItem[]
 }
@@ -110,7 +117,9 @@ model Order {
   updatedAt   DateTime    @updatedAt
 
   branchId    String
-  branch      Branch      @relation(fields: [branchId], references: [id])
+  branch      Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
 
   items       OrderItem[]
 }
@@ -128,7 +137,7 @@ model OrderItem {
   menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
 
   branchId   String
-  branch     Branch   @relation(fields: [branchId], references: [id])
+  branch     Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@index([branchId])
 }
@@ -146,7 +155,9 @@ model InventoryItem {
   updatedAt DateTime @updatedAt
 
   branchId  String
-  branch    Branch   @relation(fields: [branchId], references: [id])
+  branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
 }
 
 // -----------------------------------------------------------------------------
@@ -170,7 +181,9 @@ model Promotion {
   updatedAt    DateTime     @updatedAt
 
   branchId     String
-  branch       Branch       @relation(fields: [branchId], references: [id])
+  branch       Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
 
   @@unique([code, branchId])
 }

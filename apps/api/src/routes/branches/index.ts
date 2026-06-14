@@ -8,11 +8,41 @@ import { FastifyPluginAsync } from 'fastify'
  */
 const branchesRoute: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   // GET /branches
-  fastify.get('/', async function (request, reply) {
-    const branches = await fastify.prisma.branch.findMany({
-      orderBy: { createdAt: 'desc' }
-    })
-    return branches
+  fastify.get<{
+    Querystring: { page?: number; limit?: number }
+  }>('/', {
+    schema: {
+      querystring: {
+        type: 'object',
+        properties: {
+          page: { type: 'integer', minimum: 1, default: 1 },
+          limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 }
+        }
+      }
+    }
+  }, async function (request, reply) {
+    const page = Number(request.query.page) || 1
+    const limit = Number(request.query.limit) || 10
+    const skip = (page - 1) * limit
+
+    const [branches, totalCount] = await Promise.all([
+      fastify.prisma.branch.findMany({
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit
+      }),
+      fastify.prisma.branch.count()
+    ])
+    
+    return {
+      data: branches,
+      pagination: {
+        page,
+        limit,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit)
+      }
+    }
   })
 
   // POST /branches

@@ -6,7 +6,10 @@ const connectionString = process.env.DATABASE_URL;
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
+  pool: Pool | undefined;
 };
+
+const logConfig: any = process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"];
 
 /**
  * Initializes and returns a new instance of PrismaClient configured for Postgres.
@@ -16,13 +19,21 @@ const globalForPrisma = globalThis as unknown as {
 const getPrismaClient = () => {
   if (connectionString) {
     const pool = new Pool({ connectionString });
+    globalForPrisma.pool = pool;
     const adapter = new PrismaPg(pool);
-    return new PrismaClient({ adapter, log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"] });
+    return new PrismaClient({ adapter, log: logConfig });
   }
-  return new PrismaClient({ log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"] });
+  return new PrismaClient({ log: logConfig });
 };
 
 export const prisma = globalForPrisma.prisma ?? getPrismaClient();
+
+export const closePrisma = async () => {
+  await prisma.$disconnect();
+  if (globalForPrisma.pool) {
+    await globalForPrisma.pool.end();
+  }
+};
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 

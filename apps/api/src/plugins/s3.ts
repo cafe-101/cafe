@@ -36,7 +36,7 @@ const s3Plugin: FastifyPluginAsync = async (fastify, opts) => {
         await s3Client.send(new CreateBucketCommand({ Bucket: defaultBucket }))
         
         // Set bucket policy for public read (since we'll serve images)
-        if (process.env.NODE_ENV !== 'production' || process.env.ALLOW_PUBLIC_BUCKET === 'true') {
+        if (process.env.NODE_ENV === 'development' || process.env.ALLOW_PUBLIC_BUCKET === 'true') {
           const policy = {
             Version: '2012-10-17',
             Statement: [

@@ -1,6 +1,5 @@
-import { PrismaClient, AuditAction } from '@cafe/db';
-
-const prisma = new PrismaClient();
+import { AuditAction } from '@cafe/db';
+import { prisma } from '@cafe/db';
 
 export interface AuditLogOptions {
   action: AuditAction;
@@ -30,7 +29,7 @@ export async function createAuditLog(options: AuditLogOptions) {
         branchId: options.branchId,
         ipAddress: options.ipAddress,
         deviceInfo: options.deviceInfo,
-        metadata: options.metadata ? JSON.parse(JSON.stringify(options.metadata)) : undefined,
+        metadata: options.metadata ? structuredClone(options.metadata) : undefined,
       },
     });
     return log;

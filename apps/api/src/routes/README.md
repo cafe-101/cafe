@@ -3,7 +3,7 @@
 Routes define the pathways within your application.
 Fastify's structure supports the modular monolith approach, where your
 application is organized into distinct, self-contained modules.
-This facilitates easier scaling and future transition to a microservice architecture.
+This facilitates scaling and future transition to a microservice architecture.
 In the future you might want
 to independently deploy some of those.
 

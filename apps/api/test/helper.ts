@@ -1,6 +1,7 @@
 // This file contains code that we reuse between our tests.
 import * as path from 'node:path'
 import * as test from 'node:test'
+// Using CommonJS require here because fastify-cli/helper.js is a CommonJS module
 const helper = require('fastify-cli/helper.js')
 
 export type TestContext = {
