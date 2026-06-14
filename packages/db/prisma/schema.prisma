@@ -129,6 +129,8 @@ model OrderItem {
 
   branchId   String
   branch     Branch   @relation(fields: [branchId], references: [id])
+
+  @@index([branchId])
 }
 
 // -----------------------------------------------------------------------------
