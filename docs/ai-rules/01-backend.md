@@ -14,6 +14,7 @@
 ## 3. Database & Security
 - **Multi-Tenant**: Auto-inject `branchId` to all operational Prisma models/queries. Enforce `where: { branchId }` isolation for Branch Managers. Super Admins bypass this.
 - **Security**: Row-level/app-level scoping per `branchId`. JWT guards for Auth+RBAC. No committed `.env`s.
+- **Audit Logging**: All significant actions (e.g. sign in, sign up, purchases, cancellations, coupon usage) MUST be logged in the `AuditLog` table. This log must capture the action, `entityId`, `userId`, `ipAddress`, and `deviceInfo`.
 
 ## 4. Advanced Domains
 - **Promotions**: Rules Engine in `promotion-engine` evaluates carts via Redis against BOGO/Tiered rules.

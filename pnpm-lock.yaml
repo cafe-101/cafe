@@ -20,6 +20,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.1068.0
         version: 3.1068.0
+      '@cafe/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@cafe/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -137,7 +140,11 @@ importers:
 
   packages/biome-config: {}
 
-  packages/core: {}
+  packages/core:
+    dependencies:
+      '@cafe/db':
+        specifier: workspace:*
+        version: link:../db
 
   packages/db:
     dependencies:

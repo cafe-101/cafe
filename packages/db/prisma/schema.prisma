@@ -174,3 +174,36 @@ model Promotion {
 
   @@unique([code, branchId])
 }
+
+// -----------------------------------------------------------------------------
+// AUDIT LOGGING
+// -----------------------------------------------------------------------------
+
+enum AuditAction {
+  SIGN_UP
+  SIGN_IN
+  SIGN_OUT
+  PURCHASE
+  CANCELLATION
+  COUPON_USAGE
+  OTHER
+}
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  action      AuditAction
+  entityId    String?     // ID of the affected entity (Order, User, etc)
+  entityType  String?     // Type of the affected entity
+  userId      String?     // User who performed the action
+  branchId    String?     // Branch context
+  ipAddress   String?     // IP address of the request
+  deviceInfo  String?     // User-Agent or device details
+  metadata    Json?       // Flexible JSON for before/after states or context
+  createdAt   DateTime    @default(now())
+
+  // We don't necessarily need strong foreign keys for audit logs to prevent
+  // deletion constraints, but we index them for fast querying.
+  @@index([userId])
+  @@index([branchId])
+  @@index([action])
+}
