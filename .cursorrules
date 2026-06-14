@@ -1,5 +1,5 @@
 # Global Instructions
 
-Please refer to the `.agents/rules/` directory for all AI Agent rules, technical guidelines, and architectural constraints. For tool-specific rules and skills (such as Stripe integrations), please also refer to the `.agents/skills/` directory.
+Please refer to the `.agents/rules/` directory for all AI Agent rules, technical guidelines, and architectural constraints. 
 
-Read all `.md` files in these directories before proceeding with significant coding tasks.
+Read all `.md` files in that directory before proceeding with significant coding tasks.
