@@ -4,7 +4,7 @@
 This project is a **Coffee Shop Chain** with one main headquarters (HQ) and multiple branches. It is **NOT** a multi-vendor marketplace. 
 - The `customer-mobile` app must provide a robust, feature-rich shopping experience (similar to Daraz/Pathao) for ordering, applying promos, and exploring purchasing options. 
 - `hq-web` is the central admin portal.
-- `branch-tablet` is strictly for individual branches to receive and fulfill orders.
+- `branch-tablet` is strictly for individual branches to receive and fulfill orders. (CURRENTLY INACTIVE)
 
 ## 2. Global Engineering Principles
 1. **Reasoning**: Always explain technical trade-offs/decisions for code changes. Ask for clarification on ambiguous business/tenant rules.

@@ -1,4 +1,4 @@
-# Mobile & Tablet Apps AI Rules (`apps/customer-mobile` & `apps/branch-tablet`)
+# Mobile & Tablet Apps AI Rules (`apps/customer-mobile` & `apps/branch-tablet` - INACTIVE)
 
 ## 1. Framework & Libraries
 - **React Native**: Expo modules architecture.

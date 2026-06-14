@@ -11,7 +11,7 @@ Welcome to the **Cafe** software suite! This is a high-performance, multi-tenant
 - **Storage:** LocalStack S3 API (v4.14.0)
 - **Backend API:** Fastify (Path-based routing, Zod validation)
 - **Web Frontend:** Next.js 14+ (App Router, Tailwind CSS v4)
-- **Mobile Apps:** Expo / React Native (`customer-mobile`, `branch-tablet`)
+- **Mobile Apps:** Expo / React Native (`customer-mobile`, `branch-tablet` - INACTIVE)
 - **Payments:** Stripe (Web, Native Apple Pay & Google Pay)
 
 ---
@@ -24,7 +24,7 @@ cafe/
 │   ├── api/                 # Fastify core API
 │   ├── customer-mobile/     # Expo app for customers (iOS/Android)
 │   ├── hq-web/              # Next.js app for Head Office
-│   └── branch-tablet/       # Expo app for Kitchen Display & POS
+│   └── branch-tablet/       # (INACTIVE) Expo app for Kitchen Display & POS
 ├── packages/
 │   ├── db/                  # Prisma schema, migrations, and PostgreSQL adapters
 │   ├── core/                # Shared business logic, DTOs, Zod schemas
@@ -32,7 +32,7 @@ cafe/
 │   ├── analytics/           # Shared telemetry and tracking interfaces
 │   └── biome-config/        # Shared formatting and linting rules
 ├── docker/                  # Local infrastructure configs (Postgres, Redis, LocalStack)
-└── docs/                    # Architecture and AI agent guidelines
+└── .agents/                 # Architecture and AI agent guidelines
 ```
 
 ---
@@ -44,7 +44,7 @@ To ensure zero conflicts during local development, services are mapped to a stri
 - `apps/api`: **4040**
 - `apps/customer-mobile`: **4041**
 - `apps/hq-web`: **4042**
-- `apps/branch-tablet`: **4043**
+- `apps/branch-tablet`: **4043** (INACTIVE)
 - **PostgreSQL (18.4)**: `4044`
 - **Redis (8.8.0)**: `4045`
 - **LocalStack S3**: `4046`
@@ -98,6 +98,6 @@ pnpm build
 
 ## 🏗️ Architectural Rules & AI Guidelines
 
-For critical team guidelines, system architecture rules, and AI assistant prompt instructions, please refer to the `docs/ai-rules/` directory.
+For critical team guidelines, system architecture rules, and AI assistant prompt instructions, please refer to the `.agents/rules/` directory.
 
 All AI coding assistants (like Cursor, Windsurf, or Antigravity) are instructed to automatically read from that directory for project context.

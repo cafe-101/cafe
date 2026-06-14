@@ -1,5 +1,5 @@
 # Global Instructions
 
-Please refer to the `docs/ai-rules/` directory for all AI Agent rules, technical guidelines, and architectural constraints. 
+Please refer to the `.agents/rules/` directory for all AI Agent rules, technical guidelines, and architectural constraints. 
 
 Read all `.md` files in that directory before proceeding with significant coding tasks.
