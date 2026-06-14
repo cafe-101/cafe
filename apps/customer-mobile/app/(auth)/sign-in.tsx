@@ -39,7 +39,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} nativeID="clerk-captcha">
       <Text style={styles.title}>Welcome Back</Text>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TextInput

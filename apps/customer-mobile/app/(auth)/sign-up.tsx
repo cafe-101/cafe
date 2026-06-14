@@ -52,7 +52,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} nativeID="clerk-captcha">
       {!pendingVerification && (
         <View>
           <Text style={styles.title}>Create Account</Text>

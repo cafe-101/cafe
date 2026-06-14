@@ -21,7 +21,7 @@ export default function Index() {
         </Link>
         <Link href="/(auth)/sign-up" asChild>
           <TouchableOpacity 
-            style={[styles.button, styles.secondaryButton]}
+            style={StyleSheet.flatten([styles.button, styles.secondaryButton])}
             accessibilityLabel="Sign Up Navigation"
             accessibilityHint="Goes to sign up screen"
             accessibilityRole="button"
