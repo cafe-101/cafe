@@ -11,6 +11,10 @@ const AppPath = path.join(__dirname, '..', 'src', 'app.ts')
 
 // Fill in this config with all the configurations
 // needed for testing the application
+/**
+ * Configuration function for tests.
+ * @returns {object} The configuration object containing testing options.
+ */
 function config () {
   return {
     skipOverride: true // Register our application with fastify-plugin
@@ -18,6 +22,12 @@ function config () {
 }
 
 // Automatically build and tear down our instance
+/**
+ * Builds and initializes the application instance for testing.
+ * Automatically handles teardown after the test completes.
+ * @param {TestContext} t - The node:test context object.
+ * @returns {Promise<any>} A promise that resolves to the fastify application instance.
+ */
 async function build (t: TestContext) {
   // you can set all the options supported by the fastify CLI command
   const argv = [AppPath]

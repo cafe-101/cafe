@@ -1,5 +1,11 @@
 import { FastifyPluginAsync } from 'fastify'
 
+/**
+ * Fastify plugin for branch menu routes.
+ * Manages the menu categories and items for a specific branch.
+ * @param {FastifyInstance} fastify - The fastify application instance.
+ * @param {object} opts - Plugin options.
+ */
 const branchMenuRoute: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   // GET /branches/:branchId/menu
   fastify.get<{

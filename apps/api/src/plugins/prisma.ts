@@ -9,6 +9,12 @@ declare module 'fastify' {
   }
 }
 
+/**
+ * Fastify plugin for integrating Prisma ORM.
+ * Decorates the fastify instance with a prisma client and handles graceful shutdown.
+ * @param {FastifyInstance} fastify - The fastify instance.
+ * @param {object} opts - Plugin options.
+ */
 const prismaPlugin: FastifyPluginAsync = async (fastify, opts) => {
   // Make Prisma accessible through fastify.prisma
   if (!fastify.hasDecorator('prisma')) {

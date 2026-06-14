@@ -8,6 +8,12 @@ declare module 'fastify' {
   }
 }
 
+/**
+ * Fastify plugin for integrating AWS S3 using LocalStack configuration.
+ * Decorates the fastify instance with an s3 client.
+ * @param {FastifyInstance} fastify - The fastify instance.
+ * @param {object} opts - Plugin options.
+ */
 const s3Plugin: FastifyPluginAsync = async (fastify, opts) => {
   const s3Client = new S3Client({
     region: process.env.AWS_REGION || 'us-east-1',

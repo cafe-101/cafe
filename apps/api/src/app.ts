@@ -9,6 +9,12 @@ export interface AppOptions extends FastifyServerOptions, Partial<AutoloadPlugin
 const options: AppOptions = {
 }
 
+/**
+ * Core application plugin for Fastify.
+ * Automatically loads and registers all support plugins and routing plugins.
+ * @param {FastifyInstance} fastify - The fastify application instance.
+ * @param {AppOptions} opts - Options configured for the app plugin.
+ */
 const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
   opts

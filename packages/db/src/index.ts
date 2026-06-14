@@ -8,6 +8,11 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+/**
+ * Initializes and returns a new instance of PrismaClient configured for Postgres.
+ * Enables query logging in development mode.
+ * @returns {PrismaClient} A configured PrismaClient instance.
+ */
 const getPrismaClient = () => {
   if (connectionString) {
     const pool = new Pool({ connectionString });

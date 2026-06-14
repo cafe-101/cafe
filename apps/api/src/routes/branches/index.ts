@@ -1,5 +1,11 @@
 import { FastifyPluginAsync } from 'fastify'
 
+/**
+ * Fastify plugin for branch routes.
+ * Handles the creation and retrieval of branch records.
+ * @param {FastifyInstance} fastify - The fastify application instance.
+ * @param {object} opts - Plugin options.
+ */
 const branchesRoute: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   // GET /branches
   fastify.get('/', async function (request, reply) {
