@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -----------------------------------------------------------------------------
+// CORE TENANT MODEL
+// -----------------------------------------------------------------------------
+
+model Branch {
+  id        String   @id @default(cuid())
+  name      String
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users           User[]
+  menuCategories  MenuCategory[]
+  menuItems       MenuItem[]
+  orders          Order[]
+  inventoryItems  InventoryItem[]
+  promotions      Promotion[]
+}
+
+// -----------------------------------------------------------------------------
+// USERS & STAFF
+// -----------------------------------------------------------------------------
+
+enum Role {
+  SUPER_ADMIN
+  BRANCH_MANAGER
+  STAFF
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String?  @unique // Tied to Clerk authentication
+  email     String   @unique
+  name      String?
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Multi-tenant (Super Admins might have branchId = null)
+  branchId  String?
+  branch    Branch?  @relation(fields: [branchId], references: [id])
+}
+
+// -----------------------------------------------------------------------------
+// MENU & PRODUCTS
+// -----------------------------------------------------------------------------
+
+model MenuCategory {
+  id        String   @id @default(cuid())
+  name      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  branchId  String
+  branch    Branch   @relation(fields: [branchId], references: [id])
+
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Int      // Stored in cents (e.g., $10.00 = 1000)
+  imageUrl    String?
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categoryId  String
+  category    MenuCategory @relation(fields: [categoryId], references: [id])
+
+  branchId    String
+  branch      Branch       @relation(fields: [branchId], references: [id])
+
+  orderItems  OrderItem[]
+}
+
+// -----------------------------------------------------------------------------
+// ORDERS & TRANSACTIONS
+// -----------------------------------------------------------------------------
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  status      OrderStatus @default(PENDING)
+  totalAmount Int         // Stored in cents
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  branchId    String
+  branch      Branch      @relation(fields: [branchId], references: [id])
+
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  quantity   Int
+  unitPrice  Int      // Price at time of order
+  createdAt  DateTime @default(now())
+
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+// -----------------------------------------------------------------------------
+// INVENTORY
+// -----------------------------------------------------------------------------
+
+model InventoryItem {
+  id        String   @id @default(cuid())
+  name      String
+  quantity  Int
+  unit      String   // e.g., 'kg', 'liters', 'pieces'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  branchId  String
+  branch    Branch   @relation(fields: [branchId], references: [id])
+}
+
+// -----------------------------------------------------------------------------
+// PROMOTIONS & OFFERS
+// -----------------------------------------------------------------------------
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  BOGO
+}
+
+model Promotion {
+  id           String       @id @default(cuid())
+  code         String       @unique
+  description  String?
+  discountType DiscountType
+  discountValue Int         // E.g., 10 for 10%, or 500 for $5.00
+  isActive     Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  branchId     String
+  branch       Branch       @relation(fields: [branchId], references: [id])
+}
