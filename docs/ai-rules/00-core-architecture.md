@@ -11,6 +11,7 @@ This project is a **Coffee Shop Chain** with one main headquarters (HQ) and mult
 2. **Code Standard**: Strict TS. No `any`. Use `unknown` + Zod. Services handle logic, Repos handle DB, Routes handle HTTP/validation.
 3. **Monorepo**: Apps never import apps. Share logic via `packages/` (e.g. `@cafe/core`).
 4. **Tooling**: `pnpm@11.6.0`, `turborepo`, `biome` (`pnpm biome format --write .`). NO `npm/yarn/prettier/eslint`.
-5. **Environment**: Local dev uses host node for apps (hot-reload); Docker for DB/Redis/LocalStack. Prod is fully Dockerized.
-6. **Ports**: Check `.env` `PORT`, fallback: API (4040), Mob (4041), Web (4042), Tab (4043), Postgres (4044), Redis (4045), LocalStack S3 (4046).
-7. **CI/CD**: `pnpm biome ci`, Turbo remote caching, Portainer/ECS/GHCR deploys.
+5. **Dependencies**: Always install the latest stable packages. Use exact pinned versions in `package.json` (no carets `^` or tildes `~`).
+6. **Environment**: Local dev uses host node for apps (hot-reload); Docker for DB/Redis/LocalStack. Prod is fully Dockerized.
+7. **Ports**: Check `.env` `PORT`, fallback: API (4040), Mob (4041), Web (4042), Tab (4043), Postgres (4044), Redis (4045), LocalStack S3 (4046).
+8. **CI/CD**: `pnpm biome ci`, Turbo remote caching, Portainer/ECS/GHCR deploys.

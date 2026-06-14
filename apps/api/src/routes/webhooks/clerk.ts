@@ -4,7 +4,7 @@ import { createAuditLog } from '@cafe/core'
 const clerkWebhooks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.post('/clerk', async function (request, reply) {
     const payload = request.body as any
-    const headers = request.headers
+    // const headers = request.headers
     
     // TODO: Verify the webhook signature using svix
     // const svix_id = headers["svix-id"] as string;
