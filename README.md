@@ -32,7 +32,7 @@ cafe/
 │   ├── analytics/           # Shared telemetry and tracking interfaces
 │   └── biome-config/        # Shared formatting and linting rules
 ├── docker/                  # Local infrastructure configs (Postgres, Redis, LocalStack)
-└── docs/                    # Architecture and AI agent guidelines
+└── .agents/                 # Architecture, AI agent guidelines, and skills
 ```
 
 ---
@@ -98,6 +98,6 @@ pnpm build
 
 ## 🏗️ Architectural Rules & AI Guidelines
 
-For critical team guidelines, system architecture rules, and AI assistant prompt instructions, please refer to the `docs/ai-rules/` directory.
+For critical team guidelines, system architecture rules, and AI assistant prompt instructions, please refer to the `.agents/rules/` directory. For specific tool capabilities and rules (such as Stripe integrations), refer to `.agents/skills/`.
 
-All AI coding assistants (like Cursor, Windsurf, or Antigravity) are instructed to automatically read from that directory for project context.
+All AI coding assistants (like Cursor, Windsurf, or Antigravity) are instructed to automatically read from these directories for project context.
