@@ -30,27 +30,30 @@ const s3Plugin: FastifyPluginAsync = async (fastify, opts) => {
         await s3Client.send(new CreateBucketCommand({ Bucket: defaultBucket }))
         
         // Set bucket policy for public read (since we'll serve images)
-        const policy = {
-          Version: '2012-10-17',
-          Statement: [
-            {
-              Action: ['s3:GetObject'],
-              Effect: 'Allow',
-              Principal: '*',
-              Resource: [`arn:aws:s3:::${defaultBucket}/*`]
-            }
-          ]
+        if (process.env.NODE_ENV !== 'production' || process.env.ALLOW_PUBLIC_BUCKET === 'true') {
+          const policy = {
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Action: ['s3:GetObject'],
+                Effect: 'Allow',
+                Principal: '*',
+                Resource: [`arn:aws:s3:::${defaultBucket}/*`]
+              }
+            ]
+          }
+          await s3Client.send(new PutBucketPolicyCommand({ 
+            Bucket: defaultBucket, 
+            Policy: JSON.stringify(policy) 
+          }))
         }
-        await s3Client.send(new PutBucketPolicyCommand({ 
-          Bucket: defaultBucket, 
-          Policy: JSON.stringify(policy) 
-        }))
       } else {
         throw error
       }
     }
   } catch (error) {
     fastify.log.error(error, 'LocalStack S3 Bucket Initialization Failed')
+    throw error
   }
 
   if (!fastify.hasDecorator('s3')) {

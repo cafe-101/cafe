@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev -p 4042",
     "build": "next build",
-    "start": "next start -p 4042",
-    "lint": "eslint"
+    "start": "next start -p 4042"
   },
   "dependencies": {
     "next": "16.2.9",
@@ -18,8 +17,6 @@
     "@types/node": "latest",
     "@types/react": "19",
     "@types/react-dom": "19",
-    "eslint": "10",
-    "eslint-config-next": "16.2.9",
     "tailwindcss": "4",
     "typescript": "6"
   }

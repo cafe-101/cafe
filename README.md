@@ -54,14 +54,14 @@ To ensure zero conflicts during local development, services are mapped to a stri
 ## 🛠️ Getting Started
 
 ### 1. Prerequisites
-- **Node.js**: `v26` or higher
+- **Node.js**: `v24` or higher
 - **pnpm**: `v11.6.0`
 - **Docker** & **Docker Compose**
 
 ### 2. Installation
 Clone the repository and install all workspace dependencies:
 ```bash
-git clone https://github.com/your-org/cafe.git
+git clone git@github.com:cafe-101/cafe.git
 cd cafe
 pnpm install
 ```

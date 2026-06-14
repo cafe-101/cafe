@@ -8,9 +8,10 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "test": "turbo test",
-    "clean": "turbo clean && rm -rf node_modules"
+    "clean": "turbo clean && rimraf node_modules"
   },
   "devDependencies": {
+    "rimraf": "^5.0.5",
     "turbo": "2.9.18"
   },
   "packageManager": "pnpm@11.6.0",

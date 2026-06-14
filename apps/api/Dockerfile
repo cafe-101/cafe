@@ -1,4 +1,4 @@
-FROM node:26-alpine AS builder
+FROM node:22-alpine AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk update && apk add --no-cache libc6-compat
 # Enable corepack for pnpm
@@ -10,7 +10,7 @@ RUN pnpm install -g turbo@2.9.18
 COPY . .
 RUN turbo prune api --docker
 
-FROM node:26-alpine AS installer
+FROM node:22-alpine AS installer
 RUN apk update && apk add --no-cache libc6-compat
 RUN corepack enable pnpm
 WORKDIR /app
@@ -19,14 +19,14 @@ WORKDIR /app
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 RUN pnpm turbo run build --filter=api...
 
-FROM node:26-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 RUN corepack enable pnpm
 

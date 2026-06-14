@@ -36,13 +36,18 @@ const branchMenuRoute: FastifyPluginAsync = async (fastify, opts): Promise<void>
         required: ['name'],
         properties: {
           name: { type: 'string' },
-          sortOrder: { type: 'number' }
+          sortOrder: { type: 'integer' }
         }
       }
     }
   }, async function (request, reply) {
     const { branchId } = request.params
     const { name, sortOrder } = request.body
+
+    const branch = await fastify.prisma.branch.findUnique({ where: { id: branchId } })
+    if (!branch) {
+      return reply.code(404).send({ error: 'Branch not found' })
+    }
 
     const category = await fastify.prisma.menuCategory.create({
       data: {
@@ -67,7 +72,7 @@ const branchMenuRoute: FastifyPluginAsync = async (fastify, opts): Promise<void>
         required: ['name', 'price', 'categoryId'],
         properties: {
           name: { type: 'string' },
-          price: { type: 'number' },
+          price: { type: 'integer' },
           categoryId: { type: 'string' },
           description: { type: 'string' }
         }

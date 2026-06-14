@@ -25,6 +25,7 @@ model Branch {
   menuCategories  MenuCategory[]
   menuItems       MenuItem[]
   orders          Order[]
+  orderItems      OrderItem[]
   inventoryItems  InventoryItem[]
   promotions      Promotion[]
 }
@@ -125,6 +126,9 @@ model OrderItem {
 
   menuItemId String
   menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+
+  branchId   String
+  branch     Branch   @relation(fields: [branchId], references: [id])
 }
 
 // -----------------------------------------------------------------------------
@@ -155,7 +159,7 @@ enum DiscountType {
 
 model Promotion {
   id           String       @id @default(cuid())
-  code         String       @unique
+  code         String
   description  String?
   discountType DiscountType
   discountValue Int         // E.g., 10 for 10%, or 500 for $5.00
@@ -165,4 +169,6 @@ model Promotion {
 
   branchId     String
   branch       Branch       @relation(fields: [branchId], references: [id])
+
+  @@unique([code, branchId])
 }

@@ -13,10 +13,10 @@ Each service is a [Fastify
 plugin](https://fastify.dev/docs/latest/Reference/Plugins/), it is
 encapsulated (it can have its own independent plugins) and it is
 typically stored in a file; be careful to group your routes logically,
-e.g. all `/users` routes in a `users.js` file. We have added
-a `root.js` file for you with a '/' root added.
+e.g. all `/users` routes in a `users.ts` file. We have added
+a `root.ts` file for you with a '/' root added.
 
-If a single file becomes too large, create a folder and add a `index.js` file there:
+If a single file becomes too large, create a folder and add a `index.ts` file there:
 this file must be a Fastify plugin, and it will be loaded automatically
 by the application. You can now add as many files as you want inside that folder.
 In this way you can create complex routes within a single monolith,
