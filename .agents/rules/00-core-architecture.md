@@ -1,10 +1,10 @@
 # AI Rules & Architectural Constraints (Senior Technical Architect)
 
 ## 1. Business Context & System Overview
-This project is a **Multi-Store Custom Food Ordering & Franchise Management Ecosystem** with one main Central Franchise Super-Admin and multiple branches (tenants). 
-- The `customer-mobile` app must provide a robust, feature-rich shopping experience for ordering, applying promos, and exploring purchasing options (dynamically scoped per store). 
+This project is a **Multi-Store Custom Food Ordering & Franchise Management Ecosystem** with one main Central Franchise Super-Admin and multiple branches (tenants).
+- The `customer-mobile` app must provide a robust, feature-rich shopping experience for ordering, applying promos, and exploring purchasing options (dynamically scoped per store).
 - `hq-web` is the central admin portal for global franchise management.
-- `branch-tablet` is the Next.js PWA for individual branches (merchants/kitchens) to receive and fulfill orders with zero-latency updates.
+- `branch-tablet` is the Next.js PWA for individual branches (merchants/kitchens) to receive and fulfill orders with real-time order updates via Supabase Realtime WebSocket.
 
 ## 2. Global Engineering Principles
 1. **Reasoning**: Always explain technical trade-offs/decisions for code changes. Ask for clarification on ambiguous business/tenant rules.

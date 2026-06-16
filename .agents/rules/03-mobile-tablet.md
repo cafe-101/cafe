@@ -2,7 +2,7 @@
 
 ## 1. Framework & Libraries
 - **Customer App (`apps/customer-mobile`)**: React Native Expo modules architecture. Uses `@tanstack/react-query` + `react-native-mmkv`.
-- **Merchant/Kitchen App (`apps/branch-tablet`)**: Next.js Progressive Web App (PWA). Heavily relies on WebSocket/Supabase Realtime for zero-latency pings and state transition controls.
+- **Merchant/Kitchen App (`apps/branch-tablet`)**: Next.js Progressive Web App (PWA). Heavily relies on Supabase Realtime subscriptions for real-time order and inventory updates via WebSocket state transition controls.
 - **Payments**: `@stripe/stripe-react-native` for PCI compliance on mobile.
 
 ## 2. Styling & UI Performance
