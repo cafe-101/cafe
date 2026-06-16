@@ -12,6 +12,7 @@ export default function Page() {
       case 'CONNECTING':
         return { text: 'Connecting...', color: 'bg-yellow-600 hover:bg-yellow-500' };
       case 'DISCONNECTED':
+      default:
         return { text: 'Disconnected', color: 'bg-red-600 hover:bg-red-500' };
     }
   };
