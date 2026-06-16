@@ -3,7 +3,7 @@
 import { useRealtimeOrders } from '../hooks/useRealtimeOrders';
 
 export default function Page() {
-  const { connectionState } = useRealtimeOrders();
+  const { connectionState } = useRealtimeOrders('default-store-1');
 
   const getConnectionDisplay = () => {
     switch (connectionState) {
