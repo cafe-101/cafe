@@ -9,7 +9,7 @@ interface Order {
   id: string;
   status: string;
   items: string;
-  created_at: string;
+  createdAt: string;
 }
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -34,15 +34,26 @@ export function useRealtimeOrders(storeId: string) {
 
     const fetchInitialOrders = async () => {
       const { data, error } = await supabase
-        .from('orders')
+        .schema('tenant')
+        .from('Order')
         .select('*')
-        .eq('store_id', storeId)
-        .order('created_at', { ascending: false });
+        .eq('storeId', storeId)
+        .order('createdAt', { ascending: false });
 
       if (error) {
         console.error('Error fetching initial orders:', error);
       } else if (data && isMounted) {
-        setOrders(data as Order[]);
+        setOrders((prev) => {
+          const fetchedOrders = data as Order[];
+          const existingMap = new Map(prev.map((o) => [o.id, o]));
+          const merged = fetchedOrders.map((o) => existingMap.get(o.id) || o);
+          const fetchedIds = new Set(fetchedOrders.map((o) => o.id));
+          const newInserts = prev.filter((o) => !fetchedIds.has(o.id));
+          
+          return [...newInserts, ...merged].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        });
       }
     };
 
@@ -52,7 +63,7 @@ export function useRealtimeOrders(storeId: string) {
       .channel('orders-realtime')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'orders', filter: `store_id=eq.${storeId}` },
+        { event: '*', schema: 'tenant', table: 'Order', filter: `storeId=eq.${storeId}` },
         (payload) => {
           if (payload.eventType === 'INSERT') {
             setOrders((prev) => [payload.new as Order, ...prev]);
