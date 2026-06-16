@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Franchise Super-Admin",
-  description: "Centralized Multi-Store Management Portal",
+  title: "Kitchen Receiver App",
+  description: "Merchant tablet interface for fulfilling orders",
 };
 
 export default function RootLayout({

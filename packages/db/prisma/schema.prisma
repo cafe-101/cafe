@@ -2,18 +2,20 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
+  schemas  = ["public", "tenant"]
 }
 
 // -----------------------------------------------------------------------------
 // CORE TENANT MODEL
 // -----------------------------------------------------------------------------
 
-model Branch {
+model Store {
   id        String   @id @default(cuid())
   name      String
   address   String?
@@ -28,6 +30,8 @@ model Branch {
   orderItems      OrderItem[]
   inventoryItems  InventoryItem[]
   promotions      Promotion[]
+
+  @@schema("public")
 }
 
 // -----------------------------------------------------------------------------
@@ -36,24 +40,26 @@ model Branch {
 
 enum Role {
   SUPER_ADMIN
-  BRANCH_MANAGER
+  STORE_MANAGER
   STAFF
+  @@schema("public")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  clerkId   String?  @unique // Tied to Clerk authentication
-  email     String   @unique
-  name      String?
-  role      Role     @default(STAFF)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  supabaseId String?  @unique // Tied to Supabase authentication
+  email      String   @unique
+  name       String?
+  role       Role     @default(STAFF)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  // Multi-tenant (Super Admins might have branchId = null)
-  branchId  String?
-  branch    Branch?  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  // Multi-tenant (Super Admins might have storeId = null)
+  storeId  String?
+  store    Store?  @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
+  @@index([storeId])
+  @@schema("public")
 }
 
 // -----------------------------------------------------------------------------
@@ -67,12 +73,14 @@ model MenuCategory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  branchId  String
-  branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  storeId  String
+  store    Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
+  @@index([storeId])
 
   items     MenuItem[]
+
+  @@schema("tenant")
 }
 
 model MenuItem {
@@ -88,13 +96,15 @@ model MenuItem {
   categoryId  String
   category    MenuCategory @relation(fields: [categoryId], references: [id])
 
-  branchId    String
-  branch      Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  storeId    String
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
+  @@index([storeId])
   @@index([categoryId])
 
   orderItems  OrderItem[]
+
+  @@schema("tenant")
 }
 
 // -----------------------------------------------------------------------------
@@ -107,6 +117,7 @@ enum OrderStatus {
   READY
   COMPLETED
   CANCELLED
+  @@schema("tenant")
 }
 
 model Order {
@@ -116,12 +127,14 @@ model Order {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  branchId    String
-  branch      Branch      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  storeId    String
+  store      Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
+  @@index([storeId])
 
   items       OrderItem[]
+
+  @@schema("tenant")
 }
 
 model OrderItem {
@@ -136,10 +149,11 @@ model OrderItem {
   menuItemId String
   menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
 
-  branchId   String
-  branch     Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  storeId   String
+  store     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
+  @@index([storeId])
+  @@schema("tenant")
 }
 
 // -----------------------------------------------------------------------------
@@ -154,10 +168,11 @@ model InventoryItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  branchId  String
-  branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  storeId  String
+  store    Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
+  @@index([storeId])
+  @@schema("tenant")
 }
 
 // -----------------------------------------------------------------------------
@@ -168,6 +183,7 @@ enum DiscountType {
   PERCENTAGE
   FIXED_AMOUNT
   BOGO
+  @@schema("tenant")
 }
 
 model Promotion {
@@ -180,12 +196,12 @@ model Promotion {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
-  branchId     String
-  branch       Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  storeId     String
+  store       Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@index([branchId])
-
-  @@unique([code, branchId])
+  @@index([storeId])
+  @@unique([code, storeId])
+  @@schema("tenant")
 }
 
 // -----------------------------------------------------------------------------
@@ -200,6 +216,7 @@ enum AuditAction {
   CANCELLATION
   COUPON_USAGE
   OTHER
+  @@schema("public")
 }
 
 model AuditLog {
@@ -208,15 +225,14 @@ model AuditLog {
   entityId    String?     // ID of the affected entity (Order, User, etc)
   entityType  String?     // Type of the affected entity
   userId      String?     // User who performed the action
-  branchId    String?     // Branch context
+  storeId     String?     // Branch context
   ipAddress   String?     // IP address of the request
   deviceInfo  String?     // User-Agent or device details
   metadata    Json?       // Flexible JSON for before/after states or context
   createdAt   DateTime    @default(now())
 
-  // We don't necessarily need strong foreign keys for audit logs to prevent
-  // deletion constraints, but we index them for fast querying.
   @@index([userId])
-  @@index([branchId])
+  @@index([storeId])
   @@index([action])
+  @@schema("public")
 }

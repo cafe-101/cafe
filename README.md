@@ -6,9 +6,9 @@ Welcome to the **Cafe** software suite! This is a high-performance, multi-tenant
 
 - **Package Manager:** `pnpm` (Workspace) + `turborepo`
 - **Node Environment:** Node.js >= 24
-- **Database:** PostgreSQL 18.4 + Prisma ORM (Multi-tenant schema)
+- **Database:** PostgreSQL 18.4 + Prisma ORM (Multi-tenant schema) + Supabase (Local)
 - **Caching & Queues:** Redis 8.8.0 (using raw Redis Streams/Lists for background tasks)
-- **Storage:** LocalStack S3 API (v4.14.0)
+- **Storage:** LocalStack S3 API (v4.14.0) + Supabase Storage
 - **Backend API:** Fastify (Path-based routing, Zod validation)
 - **Web Frontend:** Next.js 14+ (App Router, Tailwind CSS v4)
 - **Mobile Apps:** Expo / React Native (`customer-mobile`, `branch-tablet` - INACTIVE)
@@ -48,6 +48,10 @@ To ensure zero conflicts during local development, services are mapped to a stri
 - **PostgreSQL (18.4)**: `4044`
 - **Redis (8.8.0)**: `4045`
 - **LocalStack S3**: `4046`
+- **Supabase API**: `4047`
+- **Supabase DB**: `4048`
+- **Supabase Studio**: `4051`
+- **Supabase Mailpit**: `4052`
 
 ---
 
@@ -77,10 +81,11 @@ cp apps/api/.env-example apps/api/.env
 ```
 
 ### 4. Start Infrastructure
-Launch the local PostgreSQL, Redis, and LocalStack instances via Docker Compose:
+Launch the local PostgreSQL, Redis, and LocalStack instances via Docker Compose, and then start the Supabase stack:
 ```bash
 cd docker
 docker compose up -d
+npx supabase start
 cd ..
 ```
 

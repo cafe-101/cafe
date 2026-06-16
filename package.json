@@ -5,6 +5,10 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "setup:local": "cd docker && docker compose up -d && npx supabase start && cd ../packages/db && npx prisma db push",
+    "stop:local": "npx supabase stop && cd docker && docker compose down",
+    "reset:local": "pnpm stop:local && pnpm setup:local",
+    "db:reset": "npx supabase db reset",
     "lint": "turbo lint",
     "format": "turbo format",
     "test": "turbo test",
