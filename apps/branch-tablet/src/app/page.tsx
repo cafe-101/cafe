@@ -1,4 +1,23 @@
+'use client';
+
+import { useRealtimeOrders } from '../hooks/useRealtimeOrders';
+
 export default function Page() {
+  const { connectionState } = useRealtimeOrders();
+
+  const getConnectionDisplay = () => {
+    switch (connectionState) {
+      case 'CONNECTED':
+        return { text: 'Online (WebSocket Active)', color: 'bg-orange-600 hover:bg-orange-500' };
+      case 'CONNECTING':
+        return { text: 'Connecting...', color: 'bg-yellow-600 hover:bg-yellow-500' };
+      case 'DISCONNECTED':
+        return { text: 'Disconnected', color: 'bg-red-600 hover:bg-red-500' };
+    }
+  };
+
+  const { text, color } = getConnectionDisplay();
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-900 text-slate-50">
       <header className="flex justify-between items-center p-6 border-b border-white/10 sticky top-0 z-50 bg-slate-900">
@@ -11,8 +30,8 @@ export default function Page() {
           </h1>
         </div>
         <div>
-          <button className="px-5 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 transition-all font-bold">
-            Online (Supabase WebSocket Active)
+          <button className={`px-5 py-2.5 rounded-lg ${color} transition-all font-bold`}>
+            {text}
           </button>
         </div>
       </header>
