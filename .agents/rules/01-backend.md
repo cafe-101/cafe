@@ -12,8 +12,8 @@
 - **Resilience**: Wrap Redis calls in try-catch with DB fallback. Handle Stripe timeouts gracefully. Connection Pooling uses Prisma PgBouncer/Accelerate to handle DB spikes.
 
 ## 3. Database & Security
-- **Multi-Tenant**: Auto-inject `branchId` to all operational Prisma models/queries. Enforce `where: { branchId }` isolation for Branch Managers. Super Admins bypass this.
-- **Security**: Row-level/app-level scoping per `branchId`. JWT guards for Auth+RBAC. No committed `.env`s.
+- **Multi-Tenant**: Utilize PostgreSQL Schema-level multi-tenancy (`public` for global config, `tenant_<store_id>` for branch data) OR robust Row-Level Security (RLS) via Supabase to isolate data. Auto-inject `store_id` logic securely. Super Admins bypass local schemas.
+- **Security**: Supabase Auth JWT guards for authentication and RBAC. No committed `.env`s.
 - **Audit Logging**: All significant actions (e.g. sign in, sign up, purchases, cancellations, coupon usage) MUST be logged in the `AuditLog` table. This log must capture the action, `entityId`, `userId`, `ipAddress`, and `deviceInfo`.
 
 ## 4. Advanced Domains
