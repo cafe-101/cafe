@@ -5,6 +5,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "setup:local": "cd docker && docker compose up -d && npx supabase start && cd ../packages/db && npx prisma db push",
     "lint": "turbo lint",
     "format": "turbo format",
     "test": "turbo test",
