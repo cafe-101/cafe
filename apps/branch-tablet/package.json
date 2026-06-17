@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4042",
+    "dev": "next dev -p 4043",
     "build": "next build",
-    "start": "next start -p 4042"
+    "start": "next start -p 4043"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

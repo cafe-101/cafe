@@ -10,8 +10,8 @@ Welcome to the **Cafe** software suite! This is a high-performance, multi-tenant
 - **Caching & Queues:** Redis 8.8.0 (using raw Redis Streams/Lists for background tasks)
 - **Storage:** LocalStack S3 API (v4.14.0) + Supabase Storage
 - **Backend API:** Fastify (Path-based routing, Zod validation)
-- **Web Frontend:** Next.js 14+ (App Router, Tailwind CSS v4)
-- **Mobile Apps:** Expo / React Native (`customer-mobile`, `branch-tablet` - INACTIVE)
+- **Web Frontend:** Next.js 14+ (App Router, Tailwind CSS v4) for `hq-web` and `branch-tablet` (PWA)
+- **Mobile Apps:** Expo / React Native (`customer-mobile`)
 - **Payments:** Stripe (Web, Native Apple Pay & Google Pay)
 
 ---
@@ -24,12 +24,10 @@ cafe/
 │   ├── api/                 # Fastify core API
 │   ├── customer-mobile/     # Expo app for customers (iOS/Android)
 │   ├── hq-web/              # Next.js app for Head Office
-│   └── branch-tablet/       # (INACTIVE) Expo app for Kitchen Display & POS
+│   └── branch-tablet/       # Next.js PWA for Kitchen Display & POS
 ├── packages/
 │   ├── db/                  # Prisma schema, migrations, and PostgreSQL adapters
 │   ├── core/                # Shared business logic, DTOs, Zod schemas
-│   ├── promotion-engine/    # Isolated module for coupon/discount logic
-│   ├── analytics/           # Shared telemetry and tracking interfaces
 │   └── biome-config/        # Shared formatting and linting rules
 ├── docker/                  # Local infrastructure configs (Postgres, Redis, LocalStack)
 └── .agents/                 # Architecture and AI agent guidelines
@@ -44,7 +42,7 @@ To ensure zero conflicts during local development, services are mapped to a stri
 - `apps/api`: **4040**
 - `apps/customer-mobile`: **4041**
 - `apps/hq-web`: **4042**
-- `apps/branch-tablet`: **4043** (INACTIVE)
+- `apps/branch-tablet`: **4043**
 - **PostgreSQL (18.4)**: `4044`
 - **Redis (8.8.0)**: `4045`
 - **LocalStack S3**: `4046`
@@ -120,7 +118,7 @@ pnpm run ios
 # For Android Emulator (requires Android Studio)
 pnpm run android
 ```
-*(Note: Use the same commands in `apps/branch-tablet` if you wish to run the tablet app).*
+*(Note: For the tablet app in `apps/branch-tablet`, use `pnpm dev` since it is a Next.js PWA).*
 
 ---
 
