@@ -8,7 +8,7 @@ First, run the development server:
 pnpm dev
 ```
 
-Open [http://localhost:4042](http://localhost:4042) with your browser to see the result.
+Open [http://localhost:4043](http://localhost:4043) with your browser to see the result.
 
 You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
 

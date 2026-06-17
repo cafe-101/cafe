@@ -17,4 +17,4 @@
 - **Audit Logging**: All significant actions (e.g. sign in, sign up, purchases, cancellations, coupon usage) MUST be logged in the `AuditLog` table. This log must capture the action, `entityId`, `userId`, `ipAddress`, and `deviceInfo`.
 
 ## 4. Advanced Domains
-- **Promotions**: Rules Engine in `promotion-engine` evaluates carts via Redis against BOGO/Tiered rules.
+- **Promotions**: Evaluates carts via Redis against BOGO/Tiered rules.
